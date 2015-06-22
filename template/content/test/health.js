@@ -5,7 +5,7 @@ var TestCluster = require('./lib/test-cluster.js');
 TestCluster.test('calling health', {
     appCount: 2
 }, function t(cluster, assert) {
-    cluster.clients[0].health(onHealth);
+    cluster.client.health(onHealth);
 
     function onHealth(err, resp) {
         assert.ifError(err);

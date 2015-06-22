@@ -84,6 +84,7 @@ function ApplicationClients(config, options) {
         serviceName: SERVICE_NAME,
         hostPortList: config.get('clients.hyperbahn.seedList'),
         hardFail: config.get('clients.hyperbahn.hardFail'),
+        reportTracing: config.get('clients.hyperbahn.reportTracing'),
         logger: self.logger,
         statsd: self.statsd
     });
@@ -125,6 +126,6 @@ ApplicationClients.prototype.destroy = function destroy() {
     var self = this;
 
     self.hyperbahnClient.destroy();
-    self.tchannel.close();
+    self.rootChannel.close();
     self.ringpop.destroy();
 };

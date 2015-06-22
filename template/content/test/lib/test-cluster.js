@@ -5,6 +5,7 @@ var parallel = require('run-parallel');
 var tape = require('tape');
 var DebugLogtron = require('debug-logtron');
 var NullStatsd = require('uber-statsd-client/null');
+var HyperbahnCluster = require('tchannel/test/lib/hyperbahn-cluster');
 
 var TestClient = require('./test-client.js');
 var Application = require('../../app.js');
@@ -28,49 +29,61 @@ function TestCluster(opts) {
     self.appPorts = [];
     self.bootFile = null;
 
-    self.clients = [];
+    self.hyperbahnCluster = HyperbahnCluster({
+        size: 2
+    });
+
+    self.client = null;
 }
 
 TestCluster.prototype.bootstrap = function bootstrap(cb) {
     var self = this;
 
-    for (var i = 0; i < self.appCount; i++) {
-        // TODO: better port selection ;)
-        self.appPorts[i] = 20000 + Math.floor(Math.random() * 10000);
-    }
+    self.hyperbahnCluster.bootstrap(onHyperbahn);
 
-    self.bootFile = self.appPorts.map(function b(port) {
-        return self.host + ':' + port;
-    });
+    function onHyperbahn() {
+        for (var i = 0; i < self.appCount; i++) {
+            // TODO: better port selection ;)
+            self.appPorts[i] = 20000 + Math.floor(Math.random() * 10000);
+        }
 
-    for (i = 0; i < self.appCount; i++) {
-        self.apps[i] = Application({
-            logger: self.logger,
-            seedConfig: {
+        self.bootFile = self.appPorts.map(function b(port) {
+            return self.host + ':' + port;
+        });
+
+        for (i = 0; i < self.appCount; i++) {
+            var seedConfig = {
                 port: self.appPorts[i],
                 bootFile: self.bootFile,
-                host: self.host
-            }
-        });
-    }
+                host: self.host,
+                clients: {
+                    hyeprbahn: {
+                        seedList: self.hyperbahnCluster.hostPortList
+                    }
+                }
+            };
 
-    parallel(self.apps.map(function l(app) {
-        return app.bootstrap.bind(app);
-    }), onInit);
+            self.apps[i] = Application({
+                logger: self.logger,
+                statsd: self.statsd,
+                seedConfig: seedConfig
+            });
+        }
+
+        parallel(self.apps.map(function l(app) {
+            return app.bootstrap.bind(app);
+        }), onInit);
+    }
 
     function onInit(err) {
         if (err) {
             return cb(err);
         }
 
-        for (i = 0; i < self.appCount; i++) {
-            var hostPort = self.bootFile[i];
-
-            self.clients[i] = TestClient({
-                hostPort: hostPort,
-                logger: self.logger
-            });
-        }
+        self.client = TestClient({
+            logger: self.logger,
+            peers: self.hyperbahnCluster.hostPortList
+        });
         cb(null);
     }
 };
@@ -82,6 +95,7 @@ TestCluster.prototype.close = function close(cb) {
         self.apps[i].destroy();
     }
 
-    cb();
+    self.client.destroy();
+    self.hyperbahnCluster.close(cb);
 };
 

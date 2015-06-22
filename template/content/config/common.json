@@ -13,8 +13,8 @@
 
         "hyperbahn": {
             "seedList": [],
-            "hardFail": false,
-            "enabled": false
+            "hardFail": true,
+            "reportTracing": false
         },
 
         "uncaught-exception": {

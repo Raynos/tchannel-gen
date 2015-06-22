@@ -1,6 +1,7 @@
 'use strict';
 
 var TChannel = require('tchannel');
+var HyperbahnClient = require('tchannel/hyperbahn');
 var fs = require('fs');
 var path = require('path');
 
@@ -20,27 +21,35 @@ function TestClient(options) {
     var self = this;
 
     self.tchannel = TChannel({
+        logger: options.logger
+    });
+    self.hyperbahnClient = HyperbahnClient({
+        tchannel: self.tchannel,
+        serviceName: SERVICE_NAME + '-test',
+        hostPortList: options.peers,
         logger: options.logger,
-        requestDefaults: {
-            hasNoParent: true,
-            headers: {
-                cn: 'test-client'
-            }
-        }
+        reportTracing: false
     });
+
     self.tchannelThrift = self.tchannel.TChannelThrift({
-        source: thriftFile
-    });
-    self.clientChannel = self.tchannel.makeSubChannel({
-        serviceName: SERVICE_NAME,
-        peers: [options.hostPort]
+        source: thriftFile,
+        channel: self.hyperbahnClient.getClientChannel({
+            serviceName: SERVICE_NAME
+        })
     });
 }
 
 TestClient.prototype.health = function health(cb) {
     var self = this;
 
-    self.tchannelThrift.send(self.clientChannel.request({
+    self.tchannelThrift.request({
         serviceName: 'logger'
-    }), 'Logger::health', null, null, cb);
+    }).send('MyService::health_v1', null, null, cb);
+};
+
+TestClient.prototype.destroy = function destroy() {
+    var self = this;
+
+    self.hyperbahnClient.destroy();
+    self.tchannel.close();
 };
