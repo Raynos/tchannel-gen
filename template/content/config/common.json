@@ -5,7 +5,8 @@
         "logtron": {
             "console": true
         },
-        "statsd": {
+
+        "uber-statsd-client": {
             "host": null,
             "port": null
         },
@@ -17,7 +18,7 @@
         },
 
         "uncaught-exception": {
-            "backupFile": null
+            "backupFile": "uncaught-exception.log"
         }
     },
 

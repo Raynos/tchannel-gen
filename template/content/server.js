@@ -25,7 +25,7 @@ function main() {
         }
 
         app.clients.logger.info('server started', {
-            serverAddress: app.clients.tchannel.address()
+            serverAddress: app.clients.rootChannel.address()
         });
     });
 }
