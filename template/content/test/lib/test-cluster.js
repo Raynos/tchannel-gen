@@ -41,7 +41,11 @@ TestCluster.prototype.bootstrap = function bootstrap(cb) {
 
     self.hyperbahnCluster.bootstrap(onHyperbahn);
 
-    function onHyperbahn() {
+    function onHyperbahn(err) {
+        if (err) {
+            return cb(err);
+        }
+
         for (var i = 0; i < self.appCount; i++) {
             // TODO: better port selection ;)
             self.appPorts[i] = 20000 + Math.floor(Math.random() * 10000);
@@ -57,7 +61,7 @@ TestCluster.prototype.bootstrap = function bootstrap(cb) {
                 bootFile: self.bootFile,
                 host: self.host,
                 clients: {
-                    hyeprbahn: {
+                    hyperbahn: {
                         seedList: self.hyperbahnCluster.hostPortList
                     }
                 }

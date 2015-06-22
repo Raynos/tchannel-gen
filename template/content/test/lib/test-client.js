@@ -31,7 +31,7 @@ function TestClient(options) {
         reportTracing: false
     });
 
-    self.tchannelThrift = self.tchannel.TChannelThrift({
+    self.tchannelThrift = self.tchannel.TChannelAsThrift({
         source: thriftFile,
         channel: self.hyperbahnClient.getClientChannel({
             serviceName: SERVICE_NAME
@@ -43,7 +43,8 @@ TestClient.prototype.health = function health(cb) {
     var self = this;
 
     self.tchannelThrift.request({
-        serviceName: 'logger'
+        serviceName: SERVICE_NAME,
+        hasNoParent: true
     }).send('MyService::health_v1', null, null, cb);
 };
 

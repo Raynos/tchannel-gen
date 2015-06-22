@@ -79,6 +79,7 @@ function ApplicationClients(config, options) {
     self.tchannelThrift = self.rootChannel.TChannelAsThrift({
         source: thriftFile
     });
+
     self.hyperbahnClient = HyperbahnClient({
         tchannel: self.rootChannel,
         serviceName: SERVICE_NAME,
