@@ -42,7 +42,7 @@
     "lint": "standard .",
     "cover": "nyc node test/index.js && npm run report-cover -s && npm run check-cover -s",
     "report-cover": "nyc report --reporter html --reporter text",
-    "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100 '.nyc_output/*.json' || echo lol",
+    "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100 '.nyc_output/*.json'",
     "view-cover": "opn ./coverage/index.html"
   }
 }

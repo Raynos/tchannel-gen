@@ -114,7 +114,11 @@ ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
     }
 
     function onRingpop(err) {
+        /*istanbul ignore if*/
         if (err) {
+            self.logger.fatal('cannot bootstrap ringpop', {
+                err: err
+            });
             return cb(err);
         }
 

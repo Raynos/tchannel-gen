@@ -35,6 +35,14 @@ function health(app, req, head, body, cb) {
 
 Endpoints.prototype.get =
 function get(app, req, head, body, cb) {
+    if (!(body.key in app.exampleDb)) {
+        return cb(null, {
+            ok: false,
+            body: new Error('no such key ' + body.key),
+            typeName: 'noKey'
+        });
+    }
+
     var value = app.exampleDb[body.key];
 
     cb(null, {

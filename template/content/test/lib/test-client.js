@@ -48,6 +48,29 @@ TestClient.prototype.health = function health(cb) {
     }).send('MyService::health_v1', null, null, cb);
 };
 
+TestClient.prototype.get = function get(key, cb) {
+    var self = this;
+
+    self.tchannelThrift.request({
+        serviceName: SERVICE_NAME,
+        hasNoParent: true
+    }).send('MyService::get_v1', null, {
+        key: key
+    }, cb);
+};
+
+TestClient.prototype.put = function put(key, value, cb) {
+    var self = this;
+
+    self.tchannelThrift.request({
+        serviceName: SERVICE_NAME,
+        hasNoParent: true
+    }).send('MyService::put_v1', null, {
+        key: key,
+        value: value
+    }, cb);
+};
+
 TestClient.prototype.destroy = function destroy() {
     var self = this;
 
