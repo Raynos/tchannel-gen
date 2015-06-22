@@ -17,16 +17,22 @@
     }
   ],
   "dependencies": {
+    "logtron": "8.3.4",
+    "ringpop": "git+ssh://git@github.com:uber/ringpop#tchannel-beta6",
+    "tchannel": "2.0.0",
+    "zero-config": "6.0.3"
   },
   "devDependencies": {
-    "coveralls": "^2.10.0",
-    "istanbul": "^0.3.5",
-    "itape": "^1.5.0",
-    "lint-trap": "^1.0.0",
+    "leaked-handles": "5.2.0",
+    "tape-cluster": "2.1.0",
+    "run-parallel": "1.1.1",
+    "debug-logtron": "4.2.0",
+    "format-stack": "4.1.0",
+    "istanbul": "0.3.15",
+    "nyc": "2.3.0",
     "opn": "^1.0.1",
-    "pre-commit": "0.0.9",
     "tape": "^3.4.0",
-    "uber-licence": "^1.2.0"
+    "uber-standard": "3.6.5"
   },
   "licenses": [
     {
@@ -35,37 +41,11 @@
     }
   ],
   "scripts": {
-    "add-licence": "uber-licence",
-    "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100",
-    "check-licence": "uber-licence --dry",
-    "check-ls": "npm ls 1>/dev/null",
-    "cover": "npm run test-cover -s && npm run check-cover -s",
-    "lint": "lint-trap .",
-    "test": "npm run check-ls -s && npm run lint -s && npm run cover -s",
-    "test-cover": "istanbul cover --report html --print detail -- test/index.js",
-    "trace": "itape test/index.js --trace",
-    "travis": "npm run cover -s && istanbul report lcov && ((cat coverage/lcov.info | coveralls) || exit 0)",
+    "test": "npm run lint -s && npm run cover -s",
+    "lint": "standard .",
+    "cover": "nyc node test/index.js && npm run report-cover -s && npm run check-cover -s",
+    "report-cover": "nyc report --reporter html --reporter text",
+    "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100 '.nyc_output/*.json' || echo lol",
     "view-cover": "opn ./coverage/index.html"
-  },
-  "engines": {
-    "node": ">= 0.8.x"
-  },
-  "pre-commit": [
-    "check-licence",
-    "test"
-  ],
-  "pre-commit.silent": true,
-  "itape": {
-    "trace": {
-      "debuglog": [
-        "{{projectNoDash}}"
-      ],
-      "leakedHandles": {
-        "timeout": 5001,
-        "debugSockets": true
-      },
-      "formatStack": true
-    }
-  },
-  "private": true
+  }
 }
