@@ -37,12 +37,6 @@
     "tape": "^3.4.0",
     "uber-standard": "3.6.5"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://github.com/uber/{{project}}/raw/master/LICENSE"
-    }
-  ],
   "scripts": {
     "test": "npm run lint -s && npm run cover -s",
     "lint": "standard .",
