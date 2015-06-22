@@ -1,0 +1,27 @@
+{
+    "project": "{{project}}",
+
+    "clients": {
+        "logtron": {
+            "console": true
+        },
+        "statsd": {
+            "host": null,
+            "port": null
+        },
+
+        "hyperbahn": {
+            "seedList": [],
+            "hardFail": false,
+            "enabled": false
+        },
+
+        "uncaught-exception": {
+            "backupFile": null
+        }
+    },
+
+    "port": 9001,
+    "host": null,
+    "bootFile": null
+}
