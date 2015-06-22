@@ -11,24 +11,32 @@
     "url": "https://github.com/Raynos/tchannel-gen/issues",
     "email": "raynos2@gmail.com"
   },
-  "contributors": [{
-    "name": "Raynos"
-  }],
+  "contributors": [
+    {
+      "name": "Raynos"
+    }
+  ],
   "dependencies": {
+    "camelize": "1.0.0",
+    "minimist": "1.1.1",
+    "process": "0.11.1",
+    "promptly": "0.2.1",
+    "uber-ngen": "5.2.0"
   },
   "devDependencies": {
     "coveralls": "^2.10.0",
     "istanbul": "^0.3.5",
     "lint-trap": "^1.0.0",
     "opn": "^1.0.1",
-    "pre-commit": "0.0.11",
     "tap-spec": "^2.1.1",
     "tape": "^3.4.0"
   },
-  "licenses": [{
-    "type": "MIT",
-    "url": "http://github.com/Raynos/tchannel-gen/raw/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/tchannel-gen/raw/master/LICENSE"
+    }
+  ],
   "scripts": {
     "test": "npm run jshint -s && npm run cover -s",
     "unit-test": "node test/index.js | tap-spec",
