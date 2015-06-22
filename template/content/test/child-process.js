@@ -2,21 +2,30 @@
 
 var console = require('console');
 var path = require('path');
-var test = require('tape');
 var spawn = require('child_process').spawn;
 var setTimeout = require('timers').setTimeout;
 
-var TestClient = require('./lib/test-client.js');
+var TestCluster = require('./lib/test-cluster.js');
 
 var serverFile = path.join(
     __dirname, '..', 'server.js'
 );
 
-test('spin up server', function t(assert) {
-    var proc = spawn('node', [
+TestCluster.test('spin up server', {
+    appCount: 0
+}, function t(cluster, assert) {
+    var args = [
         serverFile,
-        '--server.port', '0'
-    ]);
+        '--port', '0'
+    ];
+
+    var hostPortList = cluster.hyperbahnCluster.hostPortList;
+    for (var i = 0; i < hostPortList.length; i++) {
+        args.push('--clients.hyperbahn.seedList');
+        args.push(hostPortList[i]);
+    }
+
+    var proc = spawn('node', args);
 
     var output = '';
     var errput = '';
@@ -42,11 +51,11 @@ test('spin up server', function t(assert) {
 
         assert.ok(lines.length > 0);
 
-        var portLine = lines.filter(function find(x) {
+        var startedLine = lines.filter(function find(x) {
             return x.indexOf('server started') >= 0;
-        })[0];
+        });
 
-        if (!portLine) {
+        if (!startedLine) {
             console.error('# server failed');
             console.error('# server output');
             console.error(output);
@@ -54,16 +63,8 @@ test('spin up server', function t(assert) {
             console.error(errput);
         }
 
-        assert.ok(portLine);
-        var addr = JSON.parse(portLine).serverAddress;
-        assert.ok(addr);
-
-        var port = addr.port;
-        var client = TestClient({
-            hostPort: '127.0.0.1:' + String(port)
-        });
-
-        client.health(onHealth);
+        assert.ok(startedLine);
+        cluster.client.health(onHealth);
     }
 
     function onHealth(err, resp) {
