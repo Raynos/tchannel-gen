@@ -18,6 +18,11 @@ var thriftFile = fs.readFileSync(
 
 var SERVICE_NAME = 'my-service';
 
+/* TODO:
+    - process reporter
+    - heap dump
+    - repl
+*/
 module.exports = ApplicationClients;
 
 function ApplicationClients(config, options) {

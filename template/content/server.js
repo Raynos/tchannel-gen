@@ -24,6 +24,8 @@ function main() {
             throw err;
         }
 
+        // TODO set process.title
+
         app.clients.logger.info('server started', {
             serverAddress: app.clients.rootChannel.address()
         });
