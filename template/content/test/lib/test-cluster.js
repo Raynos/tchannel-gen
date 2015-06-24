@@ -102,4 +102,3 @@ TestCluster.prototype.close = function close(cb) {
     self.client.destroy();
     self.hyperbahnCluster.close(cb);
 };
-
