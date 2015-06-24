@@ -1,6 +1,4 @@
 {
-    "project": "{{project}}",
-
     "clients": {
         "logtron": {
             "console": true
@@ -22,6 +20,8 @@
         }
     },
 
+    "project": "{{project}}",
+    "team": "my-team",
     "port": null,
     "host": null,
     "bootFile": null,
