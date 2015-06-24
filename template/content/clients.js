@@ -126,7 +126,7 @@ ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
     }
 
     function onRingpop(err) {
-        /*istanbul ignore if*/
+        /*istanbul ignore if: should never happen in prod */
         if (err) {
             self.logger.fatal('cannot bootstrap ringpop', {
                 err: err
@@ -140,14 +140,21 @@ ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
     }
 
     function onAdvertize() {
+        /*istanbul ignore else: never happens in prod */
         if (!called) {
             called = true;
             cb();
         }
     }
+
+    /*istanbul ignore next: should never happen in prod */
     function onError(err) {
         if (!called) {
             called = true;
+
+            self.logger.fatal('cannot bootstrap hyperbahn', {
+                err: err
+            });
             cb(err);
         }
     }
