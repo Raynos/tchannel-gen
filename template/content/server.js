@@ -45,7 +45,12 @@ function main(opts) {
             return process.exit(1);
         }
 
-        // TODO set process.title
+        var processTitle = opts.argv && opts.argv.processTitle;
+        if (typeof processTitle === 'string') {
+            process.title = processTitle;
+        } else {
+            process.title = 'my-title-' + hostname();
+        }
 
         var now = Date.now();
         app.clients.logger.info('server started', {
@@ -58,5 +63,7 @@ function main(opts) {
                 totalTime: now - fileStart
             }
         });
-    });
+
+        app.clients.statsd.timing('server.startup-time', now - mainStart);
+    }
 }
