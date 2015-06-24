@@ -51,6 +51,7 @@ TestCluster.test('spin up server', {
 
         assert.ok(lines.length > 0);
 
+        // server.js logs the server started message
         var startedLine = lines.filter(function find(x) {
             return x.indexOf('server started') >= 0;
         });
