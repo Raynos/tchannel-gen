@@ -110,6 +110,8 @@ function ApplicationClients(config, options) {
 ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
     var self = this;
 
+    var called = false;
+
     self.processReporter.bootstrap();
     self.rootChannel.listen(self.port, self.host, onListening);
 
@@ -132,8 +134,22 @@ ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
             return cb(err);
         }
 
-        self.hyperbahnClient.once('advertised', cb);
+        self.hyperbahnClient.once('advertised', onAdvertize);
+        self.hyperbahnClient.once('error', onError);
         self.hyperbahnClient.advertise();
+    }
+
+    function onAdvertize() {
+        if (!called) {
+            called = true;
+            cb();
+        }
+    }
+    function onError(err) {
+        if (!called) {
+            called = true;
+            cb(err);
+        }
     }
 };
 
