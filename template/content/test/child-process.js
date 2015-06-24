@@ -3,6 +3,7 @@
 var console = require('console');
 var path = require('path');
 var spawn = require('child_process').spawn;
+var exec = require('child_process').exec;
 var setTimeout = require('timers').setTimeout;
 
 var TestCluster = require('./lib/test-cluster.js');
@@ -14,6 +15,40 @@ var serverFile = path.join(
 TestCluster.test('spin up server', {
     appCount: 0
 }, function t(cluster, assert) {
+
+    spawnChild(cluster, onChild);
+
+    function onChild(err1, child) {
+        assert.ifError(err1);
+
+        assert.ok(child.lines.length > 0);
+
+        // server.js logs the server started message
+        var startedLine = child.lines.filter(function find(x) {
+            return x.indexOf('server started') >= 0;
+        })[0];
+
+        assert.ok(startedLine);
+        cluster.client.health(onHealth);
+
+        function onHealth(err2, resp) {
+            assert.ifError(err2);
+
+            assert.ok(resp.ok);
+            assert.equal(resp.body.message, 'ok');
+
+            child.proc.kill();
+            assert.end();
+        }
+    }
+});
+
+function spawnChild(cluster, opts, cb) {
+    if (typeof opts === 'function') {
+        cb = opts;
+        opts = {};
+    }
+
     var args = [
         serverFile,
         '--port', '0'
@@ -23,6 +58,10 @@ TestCluster.test('spin up server', {
     for (var i = 0; i < hostPortList.length; i++) {
         args.push('--clients.hyperbahn.seedList');
         args.push(hostPortList[i]);
+    }
+
+    if (opts.cliArgs) {
+        args = args.concat(opts.cliArgs);
     }
 
     var proc = spawn('node', args);
@@ -45,16 +84,14 @@ TestCluster.test('spin up server', {
         counter++;
         var lines = output.split('\n').filter(Boolean);
 
-        if (lines.length === 0 && counter < 5) {
-            return setTimeout(verifyStarted, 500);
-        }
-
-        assert.ok(lines.length > 0);
-
         // server.js logs the server started message
         var startedLine = lines.filter(function find(x) {
             return x.indexOf('server started') >= 0;
-        });
+        })[0];
+
+        if (!startedLine && counter < 5) {
+            return setTimeout(verifyStarted, 500);
+        }
 
         if (!startedLine) {
             console.error('# server failed');
@@ -64,17 +101,9 @@ TestCluster.test('spin up server', {
             console.error(errput);
         }
 
-        assert.ok(startedLine);
-        cluster.client.health(onHealth);
+        cb(null, {
+            proc: proc,
+            lines: lines
+        });
     }
-
-    function onHealth(err, resp) {
-        assert.ifError(err);
-
-        assert.ok(resp.ok);
-        assert.equal(resp.body.message, 'ok');
-
-        proc.kill();
-        assert.end();
-    }
-});
+}
