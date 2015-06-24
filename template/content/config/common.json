@@ -22,7 +22,8 @@
         }
     },
 
-    "port": 9001,
+    "port": null,
     "host": null,
-    "bootFile": null
+    "bootFile": null,
+    "serviceName": "my-service"
 }

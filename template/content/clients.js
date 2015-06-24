@@ -17,8 +17,6 @@ var thriftFile = fs.readFileSync(
     path.join(__dirname, 'thrift', 'service.thrift'), 'utf8'
 );
 
-var SERVICE_NAME = 'my-service';
-
 /* TODO:
     - heap dump
     - repl
@@ -32,6 +30,8 @@ function ApplicationClients(config, options) {
     }
 
     var self = this;
+
+    self.serviceName = config.get('serviceName');
 
     self.logger = options.logger || Logtron({
         meta: {
@@ -71,12 +71,12 @@ function ApplicationClients(config, options) {
         logger: self.logger,
         statsd: self.statsd,
         statTags: {
-            app: SERVICE_NAME
+            app: self.serviceName
         }
     });
 
     self.appChannel = self.rootChannel.makeSubChannel({
-        serviceName: SERVICE_NAME
+        serviceName: self.serviceName
     });
     self.ringpopChannel = self.rootChannel.makeSubChannel({
         serviceName: 'ringpop'
@@ -87,7 +87,7 @@ function ApplicationClients(config, options) {
 
     self.hyperbahnClient = HyperbahnClient({
         tchannel: self.rootChannel,
-        serviceName: SERVICE_NAME,
+        serviceName: self.serviceName,
         hostPortList: config.get('clients.hyperbahn.seedList'),
         hardFail: config.get('clients.hyperbahn.hardFail'),
         reportTracing: config.get('clients.hyperbahn.reportTracing'),
@@ -96,7 +96,7 @@ function ApplicationClients(config, options) {
     });
 
     self.ringpop = Ringpop({
-        app: SERVICE_NAME,
+        app: self.serviceName,
         logger: self.logger,
         channel: self.ringpopChannel,
         hostPort: self.host + ':' + self.port

@@ -9,8 +9,6 @@ var thriftFile = fs.readFileSync(path.join(
     __dirname, '..', '..', 'thrift', 'service.thrift'
 ), 'utf8');
 
-var SERVICE_NAME = 'my-service';
-
 module.exports = TestClient;
 
 function TestClient(options) {
@@ -20,12 +18,13 @@ function TestClient(options) {
 
     var self = this;
 
+    self.serviceName = options.serviceName;
     self.tchannel = TChannel({
         logger: options.logger
     });
     self.hyperbahnClient = HyperbahnClient({
         tchannel: self.tchannel,
-        serviceName: SERVICE_NAME + '-test',
+        serviceName: self.serviceName + '-test',
         hostPortList: options.peers,
         logger: options.logger,
         reportTracing: false
@@ -34,7 +33,7 @@ function TestClient(options) {
     self.tchannelThrift = self.tchannel.TChannelAsThrift({
         source: thriftFile,
         channel: self.hyperbahnClient.getClientChannel({
-            serviceName: SERVICE_NAME
+            serviceName: self.serviceName
         })
     });
 }
@@ -43,7 +42,7 @@ TestClient.prototype.health = function health(cb) {
     var self = this;
 
     self.tchannelThrift.request({
-        serviceName: SERVICE_NAME,
+        serviceName: self.serviceName,
         hasNoParent: true
     }).send('MyService::health_v1', null, null, cb);
 };
@@ -52,7 +51,7 @@ TestClient.prototype.get = function get(key, cb) {
     var self = this;
 
     self.tchannelThrift.request({
-        serviceName: SERVICE_NAME,
+        serviceName: self.serviceName,
         hasNoParent: true
     }).send('MyService::get_v1', null, {
         key: key
@@ -63,7 +62,7 @@ TestClient.prototype.put = function put(key, value, cb) {
     var self = this;
 
     self.tchannelThrift.request({
-        serviceName: SERVICE_NAME,
+        serviceName: self.serviceName,
         hasNoParent: true
     }).send('MyService::put_v1', null, {
         key: key,

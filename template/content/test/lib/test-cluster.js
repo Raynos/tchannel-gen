@@ -6,6 +6,8 @@ var tape = require('tape');
 var DebugLogtron = require('debug-logtron');
 var NullStatsd = require('uber-statsd-client/null');
 var HyperbahnCluster = require('tchannel/test/lib/hyperbahn-cluster');
+var path = require('path');
+var fetchConfig = require('zero-config');
 
 var TestClient = require('./test-client.js');
 var Application = require('../../app.js');
@@ -21,7 +23,12 @@ function TestCluster(opts) {
 
     var self = this;
 
-    self.logger = DebugLogtron('loggerservice');
+    self.config = fetchConfig(path.join(__dirname, '..', '..'), {
+        dcValue: 'null',
+        loose: false
+    });
+
+    self.logger = DebugLogtron(self.config.get('project'));
     self.statsd = NullStatsd();
     self.appCount = 'appCount' in opts ? opts.appCount : 1;
     self.host = '127.0.0.1';
@@ -86,6 +93,7 @@ TestCluster.prototype.bootstrap = function bootstrap(cb) {
 
         self.client = TestClient({
             logger: self.logger,
+            serviceName: self.config.get('serviceName'),
             peers: self.hyperbahnCluster.hostPortList
         });
         cb(null);
