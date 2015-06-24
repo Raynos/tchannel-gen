@@ -3,7 +3,6 @@
 var fetchConfig = require('zero-config');
 
 var ApplicationClients = require('./clients.js');
-var Endpoints = require('./endpoints.js');
 
 module.exports = Application;
 
@@ -25,7 +24,19 @@ function Application(options) {
         logger: options.logger,
         statsd: options.statsd
     });
-    self.endpoints = Endpoints(self);
+
+    var channel = self.clients.appChannel;
+    var thrift = self.clients.tchannelThrift;
+
+    thrift.register(
+        channel, 'MyService::health_v1', self, Application.health
+    );
+    thrift.register(
+        channel, 'MyService::get_v1', self, Application.get
+    );
+    thrift.register(
+        channel, 'MyService::put_v1', self, Application.put
+    );
 
     // Example data structure on application
     self.exampleDb = {};
@@ -41,4 +52,39 @@ Application.prototype.destroy = function destroy() {
     var self = this;
 
     self.clients.destroy();
+};
+
+Application.health = function health(app, req, head, body, cb) {
+    cb(null, {
+        ok: true,
+        body: {
+            message: 'ok'
+        }
+    });
+};
+
+Application.get = function get(app, req, head, body, cb) {
+    if (!(body.key in app.exampleDb)) {
+        return cb(null, {
+            ok: false,
+            body: new Error('no such key ' + body.key),
+            typeName: 'noKey'
+        });
+    }
+
+    var value = app.exampleDb[body.key];
+
+    cb(null, {
+        ok: true,
+        body: value
+    });
+};
+
+Application.put = function put(app, req, head, body, cb) {
+    app.exampleDb[body.key] = body.value;
+
+    cb(null, {
+        ok: true,
+        body: null
+    });
 };
