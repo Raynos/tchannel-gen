@@ -1,3 +1,5 @@
+'use strict';
+
 var spawn = require('child_process').spawn;
 var path = require('path');
 var fs = require('fs');
@@ -15,12 +17,12 @@ function fetchFromGitConfig(key) {
             key
         ]);
 
-        proc.stdout.once('data', function (chunk) {
+        proc.stdout.once('data', function onOut(chunk) {
             called = true;
             callback(null, String(chunk));
         });
         proc.stdout.once('error', callback);
-        proc.stdout.once('end', function () {
+        proc.stdout.once('end', function onErr() {
             if (called) {
                 return;
             }
@@ -35,11 +37,13 @@ function fetchFromGitConfig(key) {
 
 module.exports = {
     project: 'Project name: ',
-    description: function (values, callback) {
+    description: function getDescription(values, callback) {
         var pkg = path.join(values.project, 'package.json');
 
-        fs.readFile(pkg, function (err, buf) {
-            if (err) return promptFor();
+        fs.readFile(pkg, function onFile(err, buf) {
+            if (err) {
+                return promptFor();
+            }
 
             var json = JSON.parse(String(buf));
             if (!json.description) {
