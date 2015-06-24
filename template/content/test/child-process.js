@@ -43,6 +43,47 @@ TestCluster.test('spin up server', {
     }
 });
 
+TestCluster.test('spin up server with --process-title', {
+    appCount: 0
+}, function t(cluster, assert) {
+
+    spawnChild(cluster, {
+        cliArgs: ['--process-title', 'test-process-title']
+    }, onChild);
+
+    function onChild(err1, child) {
+        assert.ifError(err1);
+
+        assert.ok(child.lines.length > 0);
+
+        // server.js logs the server started message
+        var startedLine = child.lines.filter(function find(x) {
+            return x.indexOf('server started') >= 0;
+        })[0];
+
+        assert.ok(startedLine);
+        cluster.client.health(onHealth);
+
+        function onHealth(err2, resp) {
+            assert.ifError(err2);
+
+            assert.ok(resp.ok);
+            assert.equal(resp.body.message, 'ok');
+
+            exec('ps -Cp ' + child.proc.pid, onProcesses);
+        }
+
+        function onProcesses(err2, stdout) {
+            assert.ifError(err2);
+
+            assert.ok(stdout.indexOf('test-process-title') !== -1);
+
+            child.proc.kill();
+            assert.end();
+        }
+    }
+});
+
 function spawnChild(cluster, opts, cb) {
     if (typeof opts === 'function') {
         cb = opts;
