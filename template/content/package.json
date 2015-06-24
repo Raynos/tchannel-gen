@@ -32,8 +32,7 @@
     "run-parallel": "1.1.1",
     "debug-logtron": "4.2.0",
     "format-stack": "4.1.0",
-    "istanbul": "0.3.15",
-    "nyc": "2.3.0",
+    "nyc": "2.4.0",
     "opn": "^1.0.1",
     "tape": "^3.4.0",
     "uber-standard": "3.6.5"
@@ -44,7 +43,7 @@
     "lint": "standard -v --reporter stylish && echo '# linter passed'",
     "cover": "nyc node test/index.js && npm run report-cover -s && npm run check-cover -s",
     "report-cover": "nyc report --reporter html --reporter text",
-    "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100 '.nyc_output/*.json'",
+    "check-cover": "nyc check-coverage --branches=100 --lines=100 --functions=100",
     "view-cover": "opn ./coverage/index.html"
   }
 }
