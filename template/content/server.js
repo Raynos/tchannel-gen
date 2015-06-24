@@ -13,6 +13,7 @@ if (require.main === module) {
 }
 
 function main() {
+    /*eslint no-process-exit: 0*/
     var app = Application();
 
     // attach before throwing exception
@@ -21,7 +22,10 @@ function main() {
     app.bootstrap(function onAppReady(err) {
         /*istanbul ignore if*/
         if (err) {
-            throw err;
+            app.clients.logger.fatal('Could not start', {
+                error: err
+            });
+            return process.exit(1);
         }
 
         // TODO set process.title
