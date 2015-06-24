@@ -35,7 +35,7 @@ function ApplicationClients(config, options) {
 
     self.logger = options.logger || Logtron({
         meta: {
-            team: 'my-team',
+            team: config.get('team'),
             project: config.get('project')
         },
         backends: Logtron.defaultBackends({
