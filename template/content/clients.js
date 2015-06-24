@@ -11,6 +11,7 @@ var os = require('os');
 var process = require('process');
 var myLocalIp = require('my-local-ip');
 var Uncaught = require('uncaught-exception');
+var ProcessReporter = require('process-reporter');
 
 var thriftFile = fs.readFileSync(
     path.join(__dirname, 'thrift', 'service.thrift'), 'utf8'
@@ -19,7 +20,6 @@ var thriftFile = fs.readFileSync(
 var SERVICE_NAME = 'my-service';
 
 /* TODO:
-    - process reporter
     - heap dump
     - repl
 */
@@ -101,11 +101,16 @@ function ApplicationClients(config, options) {
         channel: self.ringpopChannel,
         hostPort: self.host + ':' + self.port
     });
+
+    self.processReporter = ProcessReporter({
+        statsd: self.statsd
+    });
 }
 
 ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
     var self = this;
 
+    self.processReporter.bootstrap();
     self.rootChannel.listen(self.port, self.host, onListening);
 
     function onListening() {
@@ -135,6 +140,7 @@ ApplicationClients.prototype.bootstrap = function bootstrap(cb) {
 ApplicationClients.prototype.destroy = function destroy() {
     var self = this;
 
+    self.processReporter.destroy();
     self.hyperbahnClient.destroy();
     self.rootChannel.close();
     self.ringpop.destroy();
