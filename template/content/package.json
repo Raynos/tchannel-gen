@@ -38,8 +38,9 @@
     "uber-standard": "3.6.5"
   },
   "scripts": {
-    "test": "npm run lint -s && npm run cover -s",
-    "lint": "standard .",
+    "check-ls": "npm ls --loglevel=http --parseable 1>/dev/null && echo '# npm is in a good state'",
+    "test": "npm run check-ls && npm run lint -s && npm run cover -s",
+    "lint": "standard -v --reporter stylish && echo '# linter passed'",
     "cover": "nyc node test/index.js && npm run report-cover -s && npm run check-cover -s",
     "report-cover": "nyc report --reporter html --reporter text",
     "check-cover": "istanbul check-coverage --branches=100 --lines=100 --functions=100 '.nyc_output/*.json'",
