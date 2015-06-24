@@ -1,5 +1,12 @@
 'use strict';
 
+/** TODO DELETE ME
+
+This is an example test to demonstrate how to use the
+test-client.js to write integration tests
+
+*/
+
 var TestCluster = require('./lib/test-cluster.js');
 
 TestCluster.test('calling put and get', {

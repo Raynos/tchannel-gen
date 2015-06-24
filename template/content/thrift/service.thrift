@@ -9,7 +9,7 @@ struct HealthResult {
 service MyService {
     HealthResult health_v1()
 
-    // Example endpoints; please remove.
+    // TODO Example endpoints; please remove.
     string get_v1(
         1:string key
     ) throws (

@@ -31,6 +31,8 @@ function Application(options) {
     thrift.register(
         channel, 'MyService::health_v1', self, Application.health
     );
+
+    // TODO remove example endpoints
     thrift.register(
         channel, 'MyService::get_v1', self, Application.get
     );
@@ -63,6 +65,7 @@ Application.health = function health(app, req, head, body, cb) {
     });
 };
 
+// TODO remove me
 Application.get = function get(app, req, head, body, cb) {
     if (!(body.key in app.exampleDb)) {
         return cb(null, {
@@ -80,6 +83,7 @@ Application.get = function get(app, req, head, body, cb) {
     });
 };
 
+// TODO remove me
 Application.put = function put(app, req, head, body, cb) {
     app.exampleDb[body.key] = body.value;
 

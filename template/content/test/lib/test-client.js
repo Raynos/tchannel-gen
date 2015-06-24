@@ -38,6 +38,13 @@ function TestClient(options) {
     });
 }
 
+TestClient.prototype.destroy = function destroy() {
+    var self = this;
+
+    self.hyperbahnClient.destroy();
+    self.tchannel.close();
+};
+
 TestClient.prototype.health = function health(cb) {
     var self = this;
 
@@ -47,6 +54,7 @@ TestClient.prototype.health = function health(cb) {
     }).send('MyService::health_v1', null, null, cb);
 };
 
+// TODO delete me
 TestClient.prototype.get = function get(key, cb) {
     var self = this;
 
@@ -58,6 +66,7 @@ TestClient.prototype.get = function get(key, cb) {
     }, cb);
 };
 
+// TODO delete me
 TestClient.prototype.put = function put(key, value, cb) {
     var self = this;
 
@@ -68,11 +77,4 @@ TestClient.prototype.put = function put(key, value, cb) {
         key: key,
         value: value
     }, cb);
-};
-
-TestClient.prototype.destroy = function destroy() {
-    var self = this;
-
-    self.hyperbahnClient.destroy();
-    self.tchannel.close();
 };
