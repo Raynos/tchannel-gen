@@ -43,12 +43,12 @@ TestCluster.test('spin up server', {
     }
 });
 
-TestCluster.test('spin up server with --process-title', {
+TestCluster.test('spin up server with --processTitle', {
     appCount: 0
 }, function t(cluster, assert) {
 
     spawnChild(cluster, {
-        cliArgs: ['--process-title', 'test-process-title']
+        cliArgs: ['--processTitle', 'test-process-title']
     }, onChild);
 
     function onChild(err1, child) {
