@@ -28,7 +28,7 @@ function TestCluster(opts) {
         loose: false
     });
 
-    self.logger = DebugLogtron(self.config.get('project'));
+    self.logger = DebugLogtron('mytests');
     self.statsd = NullStatsd();
     self.appCount = 'appCount' in opts ? opts.appCount : 1;
     self.host = '127.0.0.1';
