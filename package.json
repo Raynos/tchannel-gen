@@ -1,6 +1,6 @@
 {
   "name": "tchannel-gen",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Create a new tchannel+hyperbahn application",
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
