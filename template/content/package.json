@@ -21,6 +21,7 @@
     "logtron": "8.5.0",
     "minimist": "1.1.1",
     "my-local-ip": "1.0.0",
+    "process": "0.11.1",
     "process-reporter": "1.0.0",
     "ringpop": "10.0.0-beta8",
     "tchannel": "2.1.2",
