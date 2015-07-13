@@ -35,9 +35,9 @@
     "debug-logtron": "4.2.0",
     "format-stack": "4.1.0",
     "nyc": "2.4.0",
-    "opn": "^1.0.1",
-    "tape": "^3.4.0",
-    "uber-standard": "3.6.5"
+    "opn": "1.0.1",
+    "tape": "^4.0.0",
+    "uber-standard": "4.0.0"
   },
   "scripts": {
     "check-ls": "npm ls --loglevel=http --parseable 1>/dev/null && echo '# npm is in a good state'",
