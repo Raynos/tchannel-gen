@@ -76,6 +76,7 @@ function main(opts) {
     }
 }
 
+/*istanbul ignore next*/
 function abort() {
     process.abort();
 }
