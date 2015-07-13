@@ -16,7 +16,11 @@
         },
 
         "uncaught-exception": {
-            "backupFile": "uncaught-exception.log"
+            "backupFile": "uncaught-exception.log",
+            "abortTimeout": 10000,
+            "loggerTimeout": 5000,
+            "statsdTimeout": 1000,
+            "statsdWaitPeriod": 1500
         }
     },
 

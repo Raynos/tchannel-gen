@@ -8,6 +8,7 @@ var process = require('process');
 var path = require('path');
 var getRepoInfo = require('git-repo-info');
 var parseArgs = require('minimist');
+var setTimeout = require('timers').setTimeout;
 
 var Application = require('./app.js');
 
@@ -22,6 +23,13 @@ if (require.main === module) {
 
 function main(opts) {
     var mainStart = Date.now();
+
+    var processTitle = opts.argv && opts.argv.processTitle;
+    if (typeof processTitle === 'string') {
+        process.title = processTitle;
+    } else {
+        process.title = 'my-title-' + hostname();
+    }
 
     /*eslint no-process-exit: 0*/
     var app = Application();
@@ -42,14 +50,14 @@ function main(opts) {
             app.clients.logger.fatal('Could not start', {
                 error: err
             });
-            return process.exit(1);
-        }
+            app.clients.onError(err);
 
-        var processTitle = opts.argv && opts.argv.processTitle;
-        if (typeof processTitle === 'string') {
-            process.title = processTitle;
-        } else {
-            process.title = 'my-title-' + hostname();
+            var abortTimeout = app.config.get(
+                'clients.uncaught-exception.abortTimeout'
+            );
+            setTimeout(abort, abortTimeout);
+
+            return;
         }
 
         var now = Date.now();
@@ -66,4 +74,8 @@ function main(opts) {
 
         app.clients.statsd.timing('server.startup-time', now - mainStart);
     }
+}
+
+function abort() {
+    process.abort();
 }
