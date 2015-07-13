@@ -1,0 +1,33 @@
+{
+    "clients": {
+        "logtron": {
+            "console": true
+        },
+
+        "uber-statsd-client": {
+            "host": null,
+            "port": null
+        },
+
+        "hyperbahn": {
+            "seedList": [],
+            "hardFail": true,
+            "reportTracing": false
+        },
+
+        "uncaught-exception": {
+            "backupFile": "uncaught-exception.log",
+            "abortTimeout": 10000,
+            "loggerTimeout": 5000,
+            "statsdTimeout": 1000,
+            "statsdWaitPeriod": 1500
+        }
+    },
+
+    "project": "{{project}}",
+    "team": "my-team",
+    "port": null,
+    "host": null,
+    "bootFile": null,
+    "serviceName": "my-service"
+}
