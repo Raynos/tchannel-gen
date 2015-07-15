@@ -7,6 +7,7 @@
   "repository": "git://github.com/Raynos/tchannel-gen.git",
   "main": "index",
   "homepage": "https://github.com/Raynos/tchannel-gen",
+  "bin": "index.js",
   "bugs": {
     "url": "https://github.com/Raynos/tchannel-gen/issues",
     "email": "raynos2@gmail.com"

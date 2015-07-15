@@ -10,31 +10,21 @@
 
 Create a new tchannel+hyperbahn application
 
-## Example
+To get started run `npm install tchannel-gen -g`
 
-```js
-var tchannelGen = require("tchannel-gen");
+You can now run `tchannel-gen {my_service} "{my_description}"`
+and it will create a new `{my_service}` folder with the
+tchannel hyperbahn service.
 
-// TODO. Show example
-```
+Once you have your service just go:
 
-## Docs
-
-### `var someValue = tchannelGen(/*arguments*/)`
-
-<!--
-  This is a jsig notation of your interface.
-  https://github.com/Raynos/jsig
--->
-```ocaml
-tchannel-gen := (arg: Any) => void
-```
-
-// TODO. State what the module does.
+ - `cd {my_service}`
+ - `npm install`
+ - `npm test`
 
 ## Installation
 
-`npm install tchannel-gen`
+`npm install tchannel-gen -g`
 
 ## Tests
 
