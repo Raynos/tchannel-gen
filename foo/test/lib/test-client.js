@@ -56,26 +56,26 @@ TestClient.prototype.health = function health(cb) {
 };
 
 // TODO delete me
-TestClient.prototype.get = function get(key, cb) {
+TestClient.prototype.get = function get(opts, cb) {
     var self = this;
 
     self.tchannelThrift.request({
         serviceName: self.serviceName,
         hasNoParent: true
     }).send('MyService::get_v1', null, {
-        key: key
+        key: opts.key
     }, cb);
 };
 
 // TODO delete me
-TestClient.prototype.put = function put(key, value, cb) {
+TestClient.prototype.put = function put(opts, cb) {
     var self = this;
 
     self.tchannelThrift.request({
         serviceName: self.serviceName,
         hasNoParent: true
     }).send('MyService::put_v1', null, {
-        key: key,
-        value: value
+        key: opts.key,
+        value: opts.value
     }, cb);
 };

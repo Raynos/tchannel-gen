@@ -12,14 +12,19 @@ var TestCluster = require('./lib/test-cluster.js');
 TestCluster.test('calling put and get', {
     appCount: 1
 }, function t(cluster, assert) {
-    cluster.client.put('foo', 'bar', onPut);
+    cluster.client.put({
+        key: 'foo',
+        value: 'bar'
+    }, onPut);
 
     function onPut(err, resp) {
         assert.ifError(err);
 
         assert.ok(resp.ok);
 
-        cluster.client.get('foo', onGet);
+        cluster.client.get({
+            key: 'foo'
+        }, onGet);
     }
 
     function onGet(err, resp) {
@@ -35,7 +40,9 @@ TestCluster.test('calling put and get', {
 TestCluster.test('calling get for non-existant key', {
     appCount: 1
 }, function t(cluster, assert) {
-    cluster.client.get('foo', onGet);
+    cluster.client.get({
+        key: 'foo'
+    }, onGet);
 
     function onGet(err, resp) {
         assert.ifError(err);
