@@ -71,7 +71,8 @@ TestCluster.prototype.bootstrap = function bootstrap(cb) {
                 host: self.host,
                 clients: {
                     hyperbahn: {
-                        seedList: self.hyperbahnCluster.hostPortList
+                        seedList: self.hyperbahnCluster.hostPortList,
+                        reportTracing: true
                     }
                 }
             };

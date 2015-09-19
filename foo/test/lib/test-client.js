@@ -27,7 +27,8 @@ function TestClient(options) {
         serviceName: self.serviceName + '-test',
         hostPortList: options.peers,
         logger: options.logger,
-        reportTracing: false
+        hardFail: true,
+        reportTracing: true
     });
 
     self.tchannelThrift = self.tchannel.TChannelAsThrift({
