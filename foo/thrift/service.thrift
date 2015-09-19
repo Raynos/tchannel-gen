@@ -1,9 +1,9 @@
 exception NoSuchKey {
-    1:string message
+    1: required string message
 }
 
 struct HealthResult {
-    1:string message
+    1: required string message
 }
 
 service MyService {
@@ -11,12 +11,12 @@ service MyService {
 
     // TODO Example endpoints; please remove.
     string get_v1(
-        1:string key
+        1: required string key
     ) throws (
-        1:NoSuchKey noKey
+        1: optional NoSuchKey noKey
     )
     void put_v1(
-        1:string key
-        2:string value
+        1: required string key
+        2: required string value
     )
 }
