@@ -10,7 +10,7 @@ test-client.js to write integration tests
 var TestCluster = require('./lib/test-cluster.js');
 
 TestCluster.test('calling put and get', {
-    appCount: 1
+    appCount: 3
 }, function t(cluster, assert) {
     cluster.client.put({
         key: 'foo',
@@ -38,7 +38,7 @@ TestCluster.test('calling put and get', {
 });
 
 TestCluster.test('calling get for non-existant key', {
-    appCount: 1
+    appCount: 3
 }, function t(cluster, assert) {
     cluster.client.get({
         key: 'foo'

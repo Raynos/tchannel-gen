@@ -30,7 +30,7 @@ function TestCluster(opts) {
 
     self.logger = DebugLogtron('mytests');
     self.statsd = NullStatsd();
-    self.appCount = 'appCount' in opts ? opts.appCount : 1;
+    self.appCount = 'appCount' in opts ? opts.appCount : 3;
     self.host = '127.0.0.1';
     self.apps = [];
     self.appPorts = [];
