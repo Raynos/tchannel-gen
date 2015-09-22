@@ -32,7 +32,7 @@
   "devDependencies": {
     "debug-logtron": "4.2.0",
     "format-stack": "4.1.0",
-    "hyperbahn": "2.8.2",
+    "hyperbahn": "2.8.4",
     "leaked-handles": "5.2.0",
     "nyc": "2.4.0",
     "opn": "1.0.1",
