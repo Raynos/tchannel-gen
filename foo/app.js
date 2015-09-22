@@ -24,6 +24,7 @@ function Application(options) {
         logger: options.logger,
         statsd: options.statsd
     });
+    self.hostPort = null;
 
     var channel = self.clients.appChannel;
     var thrift = self.clients.tchannelThrift;
@@ -47,7 +48,16 @@ function Application(options) {
 Application.prototype.bootstrap = function bootstrap(cb) {
     var self = this;
 
-    self.clients.bootstrap(cb);
+    self.clients.bootstrap(onBootstrap);
+
+    function onBootstrap(err) {
+        if (err) {
+            return cb(err);
+        }
+
+        self.hostPort = self.clients.rootChannel.hostPort;
+        cb(null);
+    }
 };
 
 Application.prototype.destroy = function destroy() {
