@@ -2,7 +2,6 @@
 
 var TChannel = require('tchannel');
 var HyperbahnClient = require('tchannel/hyperbahn');
-var fs = require('fs');
 var path = require('path');
 
 var thriftFile = path.join(
