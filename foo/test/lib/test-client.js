@@ -46,6 +46,19 @@ TestClient.prototype.destroy = function destroy() {
     self.tchannel.close();
 };
 
+TestClient.prototype._warmup = function _warmup(opts, cb) {
+    var self = this;
+
+    if (opts && opts.host) {
+        self.tchannelThrift.waitForIdentified({
+            host: opts.host
+        }, cb);
+    } else {
+        cb(null);
+    }
+
+};
+
 TestClient.prototype.health = function health(cb) {
     var self = this;
 
@@ -59,23 +72,41 @@ TestClient.prototype.health = function health(cb) {
 TestClient.prototype.get = function get(opts, cb) {
     var self = this;
 
-    self.tchannelThrift.request({
-        serviceName: self.serviceName,
-        hasNoParent: true
-    }).send('MyService::get_v1', null, {
-        key: opts.key
-    }, cb);
+    self._warmup(opts, onIdentified);
+
+    function onIdentified(err) {
+        if (err) {
+            return cb(err);
+        }
+
+        self.tchannelThrift.request({
+            serviceName: self.serviceName,
+            hasNoParent: true,
+            host: opts.host
+        }).send('MyService::get_v1', null, {
+            key: opts.key
+        }, cb);
+    }
 };
 
 // TODO delete me
 TestClient.prototype.put = function put(opts, cb) {
     var self = this;
 
-    self.tchannelThrift.request({
-        serviceName: self.serviceName,
-        hasNoParent: true
-    }).send('MyService::put_v1', null, {
-        key: opts.key,
-        value: opts.value
-    }, cb);
+    self._warmup(opts, onIdentified);
+
+    function onIdentified(err) {
+        if (err) {
+            return cb(err);
+        }
+
+        self.tchannelThrift.request({
+            serviceName: self.serviceName,
+            hasNoParent: true,
+            host: opts.host
+        }).send('MyService::put_v1', null, {
+            key: opts.key,
+            value: opts.value
+        }, cb);
+    }
 };

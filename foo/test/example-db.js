@@ -14,6 +14,7 @@ TestCluster.test('calling put and get', {
 }, function t(cluster, assert) {
     cluster.client.put({
         key: 'foo',
+        host: cluster.apps[0].hostPort,
         value: 'bar'
     }, onPut);
 
@@ -23,7 +24,8 @@ TestCluster.test('calling put and get', {
         assert.ok(resp.ok);
 
         cluster.client.get({
-            key: 'foo'
+            key: 'foo',
+            host: cluster.apps[0].hostPort
         }, onGet);
     }
 
