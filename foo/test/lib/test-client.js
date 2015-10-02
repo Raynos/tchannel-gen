@@ -7,6 +7,9 @@ var path = require('path');
 var thriftFile = path.join(
     __dirname, '..', '..', 'thrift', 'service.thrift'
 );
+var metaThrift = path.join(
+    __dirname, '..', '..', 'node_modules', 'tchannel', 'as', 'meta.thrift'
+);
 
 module.exports = TestClient;
 
@@ -34,6 +37,11 @@ function TestClient(options) {
         serviceName: self.serviceName,
         thriftFile: thriftFile
     });
+    self.metaThrift = self.hyperbahnClient.getThriftCodecSync({
+        serviceName: self.serviceName,
+        channelName: self.serviceName + '-meta',
+        thriftFile: metaThrift
+    });
 }
 
 TestClient.prototype.destroy = function destroy() {
@@ -59,10 +67,10 @@ TestClient.prototype._warmup = function _warmup(opts, cb) {
 TestClient.prototype.health = function health(cb) {
     var self = this;
 
-    self.tchannelThrift.request({
+    self.metaThrift.request({
         serviceName: self.serviceName,
         hasNoParent: true
-    }).send('MyService::health_v1', null, null, cb);
+    }).send('Meta::health', null, null, cb);
 };
 
 // TODO delete me

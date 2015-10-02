@@ -10,8 +10,11 @@ TestCluster.test('calling health', {
     function onHealth(err, resp) {
         assert.ifError(err);
 
+        var serviceName = cluster.apps[0].serviceName;
+
         assert.ok(resp.ok);
-        assert.equal(resp.body.message, 'ok');
+        assert.equal(resp.body.ok, true);
+        assert.equal(resp.body.message, serviceName + ' is healthy');
 
         assert.end();
     }

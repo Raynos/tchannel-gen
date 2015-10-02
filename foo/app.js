@@ -25,10 +25,9 @@ function Application(options) {
         statsd: options.statsd
     });
     self.hostPort = null;
+    self.serviceName = null;
 
     var thrift = self.clients.appThrift;
-
-    thrift.register('MyService::health_v1', self, Application.health);
 
     // TODO remove example endpoints
     thrift.register('MyService::get_v1', self, Application.get);
@@ -49,6 +48,7 @@ Application.prototype.bootstrap = function bootstrap(cb) {
         }
 
         self.hostPort = self.clients.rootChannel.hostPort;
+        self.serviceName = self.clients.serviceName;
         cb(null);
     }
 };
@@ -57,15 +57,6 @@ Application.prototype.destroy = function destroy() {
     var self = this;
 
     self.clients.destroy();
-};
-
-Application.health = function health(app, req, head, body, cb) {
-    cb(null, {
-        ok: true,
-        body: {
-            message: 'ok'
-        }
-    });
 };
 
 // TODO remove me

@@ -35,7 +35,8 @@ TestCluster.test('spin up server', {
             assert.ifError(err2);
 
             assert.ok(resp.ok);
-            assert.equal(resp.body.message, 'ok');
+            assert.ok(resp.body.ok);
+            assert.equal(resp.body.message, 'my-service is healthy');
 
             child.proc.kill();
             assert.end();
@@ -68,7 +69,8 @@ TestCluster.test('spin up server with --processTitle', {
             assert.ifError(err2);
 
             assert.ok(resp.ok);
-            assert.equal(resp.body.message, 'ok');
+            assert.ok(resp.body.ok);
+            assert.equal(resp.body.message, 'my-service is healthy');
 
             exec('ps -Cp ' + child.proc.pid, onProcesses);
         }

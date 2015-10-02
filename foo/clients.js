@@ -83,7 +83,13 @@ function ApplicationClients(config, options) {
     });
     self.appThrift = self.rootChannel.TChannelAsThrift({
         source: thriftFile,
-        channel: self.appChannel
+        channel: self.appChannel,
+        isHealthy: function isHealthy() {
+            return {
+                ok: true,
+                message: self.serviceName + ' is healthy'
+            };
+        }
     });
 
     self.hyperbahnClient = HyperbahnClient({
