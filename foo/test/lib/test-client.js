@@ -5,7 +5,8 @@ var HyperbahnClient = require('tchannel/hyperbahn');
 var path = require('path');
 
 var thriftFile = path.join(
-    __dirname, '..', '..', 'thrift', 'service.thrift'
+    __dirname, '..', '..', 'idl', 'github.com',
+    'raynos', 'foo', 'my-service.thrift'
 );
 var metaThrift = path.join(
     __dirname, '..', '..', 'node_modules', 'tchannel', 'as', 'meta.thrift'

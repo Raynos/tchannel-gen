@@ -13,9 +13,9 @@ var myLocalIp = require('my-local-ip');
 var Uncaught = require('uncaught-exception');
 var ProcessReporter = require('process-reporter');
 
-var thriftFile = fs.readFileSync(
-    path.join(__dirname, 'thrift', 'service.thrift'), 'utf8'
-);
+var thriftFile = fs.readFileSync(path.join(
+    __dirname, 'idl', 'github.com', 'raynos', 'foo', 'my-service.thrift'
+), 'utf8');
 
 /* TODO:
     - heap dump
