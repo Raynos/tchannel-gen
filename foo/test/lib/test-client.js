@@ -5,9 +5,9 @@ var HyperbahnClient = require('tchannel/hyperbahn');
 var fs = require('fs');
 var path = require('path');
 
-var thriftFile = fs.readFileSync(path.join(
+var thriftFile = path.join(
     __dirname, '..', '..', 'thrift', 'service.thrift'
-), 'utf8');
+);
 
 module.exports = TestClient;
 
@@ -31,11 +31,9 @@ function TestClient(options) {
         reportTracing: true
     });
 
-    self.tchannelThrift = self.tchannel.TChannelAsThrift({
-        source: thriftFile,
-        channel: self.hyperbahnClient.getClientChannel({
-            serviceName: self.serviceName
-        })
+    self.tchannelThrift = self.hyperbahnClient.getThriftCodecSync({
+        serviceName: self.serviceName,
+        thriftFile: thriftFile
     });
 }
 
