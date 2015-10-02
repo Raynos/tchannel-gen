@@ -43,6 +43,7 @@ Application.prototype.bootstrap = function bootstrap(cb) {
     self.clients.bootstrap(onBootstrap);
 
     function onBootstrap(err) {
+        /*istanbul ignore if: should never happen in prod*/
         if (err) {
             return cb(err);
         }
