@@ -81,8 +81,9 @@ function ApplicationClients(config, options) {
     self.ringpopChannel = self.rootChannel.makeSubChannel({
         serviceName: 'ringpop'
     });
-    self.tchannelThrift = self.rootChannel.TChannelAsThrift({
-        source: thriftFile
+    self.appThrift = self.rootChannel.TChannelAsThrift({
+        source: thriftFile,
+        channel: self.appChannel
     });
 
     self.hyperbahnClient = HyperbahnClient({

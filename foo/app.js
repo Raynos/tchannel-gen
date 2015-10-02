@@ -26,20 +26,13 @@ function Application(options) {
     });
     self.hostPort = null;
 
-    var channel = self.clients.appChannel;
-    var thrift = self.clients.tchannelThrift;
+    var thrift = self.clients.appThrift;
 
-    thrift.register(
-        channel, 'MyService::health_v1', self, Application.health
-    );
+    thrift.register('MyService::health_v1', self, Application.health);
 
     // TODO remove example endpoints
-    thrift.register(
-        channel, 'MyService::get_v1', self, Application.get
-    );
-    thrift.register(
-        channel, 'MyService::put_v1', self, Application.put
-    );
+    thrift.register('MyService::get_v1', self, Application.get);
+    thrift.register('MyService::put_v1', self, Application.put);
 
     // Example data structure on application
     self.exampleDb = {};
