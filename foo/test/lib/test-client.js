@@ -34,11 +34,11 @@ function TestClient(options) {
         reportTracing: true
     });
 
-    self.tchannelThrift = self.hyperbahnClient.getThriftCodecSync({
+    self.tchannelThrift = self.hyperbahnClient.getThriftSync({
         serviceName: self.serviceName,
         thriftFile: thriftFile
     });
-    self.metaThrift = self.hyperbahnClient.getThriftCodecSync({
+    self.metaThrift = self.hyperbahnClient.getThriftSync({
         serviceName: self.serviceName,
         channelName: self.serviceName + '-meta',
         thriftFile: metaThrift
