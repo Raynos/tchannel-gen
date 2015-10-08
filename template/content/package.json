@@ -30,14 +30,14 @@
     "zero-config": "6.0.3"
   },
   "devDependencies": {
-    "leaked-handles": "5.2.0",
-    "tape-cluster": "2.1.0",
-    "run-parallel": "1.1.1",
     "debug-logtron": "4.2.0",
     "format-stack": "4.1.0",
     "nyc": "2.4.0",
+    "leaked-handles": "5.2.0",
     "opn": "1.0.1",
+    "run-parallel": "1.1.1",
     "tape": "^4.0.0",
+    "tape-cluster": "2.1.0",
     "uber-standard": "4.0.0"
   },
   "scripts": {
