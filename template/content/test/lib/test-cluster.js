@@ -5,7 +5,7 @@ var parallel = require('run-parallel');
 var tape = require('tape');
 var DebugLogtron = require('debug-logtron');
 var NullStatsd = require('uber-statsd-client/null');
-var HyperbahnCluster = require('tchannel/test/lib/hyperbahn-cluster');
+var HyperbahnCluster = require('hyperbahn/test/lib/test-cluster');
 var path = require('path');
 var fetchConfig = require('zero-config');
 
